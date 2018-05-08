@@ -41,8 +41,8 @@ app.get("/", function (req, res) {
 app.get("otter/new", function(req, res){
     res.render("new");
 });
-
-app.post("/new", function(req,res){
+    // new user
+app.post("/new", function(req, res){
     console.log("post data");
     var otter = new Otter({
         name: req.body.name,
@@ -59,13 +59,49 @@ app.post("/new", function(req,res){
         }
     });
 });
-
-app.get("/otter/:id", function(req, res){
-    Otter.find({}, function(err, otters){
+    //show a specific user
+app.get("/otter/:id", function(req, res, err){
+    var id = req.params.id;
+    Otter.find({_id:id}, function(err, otters){
         res.render("otters", {otters:otters});
     });
 });
 
+    // update a user
+app.route("/otter/:id")
+    .put(function(req, res, err){
+    var id = req.params.id;
+    Otter.find({ _id: id }, function(err, otters){
+        otter.name = req.body.name,
+        otter.age = req.body.age,
+        otter.favorite_food = req.body.favorite_food
+    });
+    otter.save(function(err){
+        if(err){
+            res.redirect("/", { errors: otter.errors });
+            console.log("oops! something went wrong");
+        } else {
+            console.log("successfully updated an otter!");
+            res.redirect("/");
+        }
+    });
+});
+
+    // delete a user
+app.route("/otter/:id")
+    .delete(function(req, res, err){
+        var id = req.params.id;
+        Otter.remove({_id:id}, function(err){
+            if (err) {
+                res.redirect("/otter/:id", { errors: otter.errors });
+                console.log("oops! something went wrong");
+            } else {
+                console.log("successfully updated an otter!");
+                res.redirect("/");
+            } 
+        });
+    });
+    
 // port
 app.listen(5000, function () {
     console.log("listening on port 5000");
