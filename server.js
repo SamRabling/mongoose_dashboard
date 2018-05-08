@@ -42,6 +42,24 @@ app.get("otter/new", function(req, res){
     res.render("new");
 });
 
+app.post("/new", function(req,res){
+    console.log("post data");
+    var otter = new Otter({
+        name: req.body.name,
+        age: req.body.age,
+        favorite_food: req.body.favorite_food
+    });
+    otter.save(function(err){
+        if(err){
+            res.render("new", {errors: otter.errors});
+            console.log("oops! something went wrong");
+        } else {
+            console.log("successfully added an otter!");
+            res.redirect("/");
+        }
+    });
+});
+
 app.get("/otter/:id", function(req, res){
     Otter.find({}, function(err, otters){
         res.render("otters", {otters:otters});
