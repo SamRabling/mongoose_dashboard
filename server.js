@@ -40,7 +40,7 @@ app.get("/", function (req, res) {
     });
 });
 
-app.get("/otter/new", function(req, res){
+app.get("/otters/new", function(req, res){
     res.render("new");
 });
     // new user
@@ -65,7 +65,7 @@ app.post("/new", function(req, res){
     });
 });
     //show a specific user
-app.get("/otter/show/:uid", function(req, res, err){
+app.get("/otters/:id", function(req, res, err){
     var id = req.params.id;
     Otter.find({_id:id}, function(err, otters){
         res.render("show", {otters:otters});
@@ -73,10 +73,16 @@ app.get("/otter/show/:uid", function(req, res, err){
 });
 
     // update a user
-app.route("/otter/edit/:uid")
-    .post(function(req, res, err){
+app.get("/otters/:id/edit", function(req, res){
     var id = req.params.id;
-    Otter.find({ _id: id }, function(err, otters){
+        Otter.findById({_id: id }, function (err, otters) {
+        res.render("edit", { otters: otters });
+    });
+});
+    // update a user
+app.post("/otters/:id", function(req, res, err){
+    var id = req.params.id;
+    Otter.findByIdAndUpdate({ _id: id }, function(err, otters){
         otter.name = req.body.name,
         otter.age = req.body.age,
         otter.favorite_food = req.body.favorite_food
@@ -93,10 +99,9 @@ app.route("/otter/edit/:uid")
 });
 
     // delete a user
-app.route("/otter/:uid")
-    .post(function(req, res, err){
+app.post("/otters/:id/delete", function(req, res, err){
         var id = req.params.id;
-        Otter.remove({_id:id}, function(err){
+        Otter.findByIdAndRemove({_id:id}, function(err){
             if (err) {
                 res.redirect("/otter/:id", { errors: otter.errors });
                 console.log("oops! something went wrong");

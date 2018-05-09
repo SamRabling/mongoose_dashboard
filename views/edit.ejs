@@ -10,7 +10,7 @@
 <body>
     <div class="header">
         <h1>Edit Otter</h1>
-        <a href="/otter/new">Add a new otter</a>
+        <a href="/otters/new">Add a new otter</a>
         <a href="/">Dashboard</a>
     </div>
         <% if(messages.quotes) {%>
@@ -18,10 +18,10 @@
                 <p><%= i %></p>
             <% } %>
         <% } %>
-    <forml action="#" method="post">
-        Name:<input type="text" name="name" value=":otters.name"> 
-        Age: <input type="text" name="age" value=":otters.age"> 
-        Favorite Food:<input type="text" name="favorite_food" value=":otters.favorite_food">
+    <form action="/otters/<%=otters.id%>" method="POST">
+        Name:<input type="text" name="name" value="<%=otters.name%>"> 
+        Age: <input type="text" name="age" value="<%=otters.age%>"> 
+        Favorite Food:<input type="text" name="favorite_food" value="<%=otters.favorite_food%>">
         <input type="submit" value="submit">
     </form>
 </body>
