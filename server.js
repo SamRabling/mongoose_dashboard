@@ -97,7 +97,7 @@ app.post("/otters/:id", function(req, res, err){
     });
 
     // delete a user
-app.post("/otters/:id/delete", function(req, res, err){
+app.get("/otters/:id/delete", function(req, res, err){
         var id = req.params.id;
         Otter.findByIdAndRemove({_id:id}, function(err){
             if (err) {
