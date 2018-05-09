@@ -29,16 +29,18 @@ var OtterSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     favorite_food: { type:String, required:true, minlength:2}
 });
-mongoose.model("Otter", QuoteSchema);
+mongoose.model("Otter", OtterSchema);
 
-var Quote = mongoose.model("Otter");
+var Otter = mongoose.model("Otter");
 
 // routes
 app.get("/", function (req, res) {
-    res.render("index");
+    Otter.find({}, function (err, otters) {
+        res.render("index", { otters: otters });
+    });
 });
 
-app.get("otter/new", function(req, res){
+app.get("/otter/new", function(req, res){
     res.render("new");
 });
     // new user
@@ -51,8 +53,11 @@ app.post("/new", function(req, res){
     });
     otter.save(function(err){
         if(err){
-            res.render("new", {errors: otter.errors});
-            console.log("oops! something went wrong");
+            console.log("oops! something went wrong", err);
+            for (var key in err.errors) {
+                req.flash('otters', err.errors[key].message);
+            }
+            res.redirect("index");
         } else {
             console.log("successfully added an otter!");
             res.redirect("/");
@@ -60,16 +65,16 @@ app.post("/new", function(req, res){
     });
 });
     //show a specific user
-app.get("/otter/:id", function(req, res, err){
+app.get("/otter/show/:uid", function(req, res, err){
     var id = req.params.id;
     Otter.find({_id:id}, function(err, otters){
-        res.render("otters", {otters:otters});
+        res.render("show", {otters:otters});
     });
 });
 
     // update a user
-app.route("/otter/:id")
-    .put(function(req, res, err){
+app.route("/otter/edit/:uid")
+    .post(function(req, res, err){
     var id = req.params.id;
     Otter.find({ _id: id }, function(err, otters){
         otter.name = req.body.name,
@@ -88,8 +93,8 @@ app.route("/otter/:id")
 });
 
     // delete a user
-app.route("/otter/:id")
-    .delete(function(req, res, err){
+app.route("/otter/:uid")
+    .post(function(req, res, err){
         var id = req.params.id;
         Otter.remove({_id:id}, function(err){
             if (err) {
@@ -101,7 +106,7 @@ app.route("/otter/:id")
             } 
         });
     });
-    
+
 // port
 app.listen(5000, function () {
     console.log("listening on port 5000");

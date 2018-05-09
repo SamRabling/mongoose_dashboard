@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Mongoose Dashboard</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Edit Otter</h1>
+        <a href="/otter/new">Add a new otter</a>
+        <a href="/">Dashboard</a>
+    </div>
+        <% if(messages.quotes) {%>
+            <% for(var i of messages.quotes){ %>
+                <p><%= i %></p>
+            <% } %>
+        <% } %>
+    <forml action="#" method="post">
+        Name:<input type="text" name="name" value=":otters.name"> 
+        Age: <input type="text" name="age" value=":otters.age"> 
+        Favorite Food:<input type="text" name="favorite_food" value=":otters.favorite_food">
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>
