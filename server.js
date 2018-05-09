@@ -82,21 +82,19 @@ app.get("/otters/:id/edit", function(req, res){
     // update a user
 app.post("/otters/:id", function(req, res, err){
     var id = req.params.id;
-    Otter.findByIdAndUpdate({ _id: id }, function(err, otters){
-        otter.name = req.body.name,
-        otter.age = req.body.age,
-        otter.favorite_food = req.body.favorite_food
-    });
-    otter.save(function(err){
+    Otter.update({ _id: id },{
+        name: req.body.name,
+        age: req.body.age,
+        favorite_food: req.body.favorite_food
+    }, err => {
         if(err){
             res.redirect("/", { errors: otter.errors });
             console.log("oops! something went wrong");
         } else {
-            console.log("successfully updated an otter!");
             res.redirect("/");
-        }
+            }
+        })
     });
-});
 
     // delete a user
 app.post("/otters/:id/delete", function(req, res, err){
