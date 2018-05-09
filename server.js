@@ -67,7 +67,7 @@ app.post("/new", function(req, res){
     //show a specific user
 app.get("/otters/:id", function(req, res, err){
     var id = req.params.id;
-    Otter.find({_id:id}, function(err, otters){
+    Otter.findById({_id:id}, function(err, otters){
         res.render("show", {otters:otters});
     });
 });

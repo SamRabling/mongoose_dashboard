@@ -8,6 +8,24 @@
     <title>Mongoose Dashboard</title>
 </head>
 <body>
-    
+    <div class="header">
+        <h1>Edit Otter</h1>
+        <a href="/otters/new">Add a new otter</a>
+        <a href="/">Dashboard</a>
+    </div>
+    <p class="otter">Name:
+        <%= otters.name %>
+    </p>
+    <p>Age:
+        <%= otters.age %>
+    </p>
+    <p>Favorite Food:
+        <%= otters.favorite_food %>
+    </p>
+    <p>
+        <a href="/otters/<%= otters.id%>/edit/">Edit</a>
+        <a href="/otters/<%= otters.id%>/delete" method="post">Delete</a>
+    </p>
+
 </body>
 </html>
